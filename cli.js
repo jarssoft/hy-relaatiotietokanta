@@ -9,7 +9,8 @@ const main = async () => {
     await sequelize.authenticate()
 
     const notes = await sequelize.query("SELECT * FROM blogs", { type: QueryTypes.SELECT })
-    console.log(notes)
+    notes.map((blog)=>console.log(`${blog.title}, ${blog.url}, ${blog.likes} likes`))
+    
     sequelize.close()
   } catch (error) {
     console.error('Unable to connect to the database:', error)
