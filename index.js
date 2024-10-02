@@ -10,7 +10,7 @@ class Blog extends Model {}
 
 Blog.init({
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER, 
     primaryKey: true,
     autoIncrement: true
   },
@@ -37,12 +37,20 @@ Blog.init({
   modelName: 'blog'
 })
 
+app.use(express.json())
 
 app.get('/api/blogs', async (req, res) => {
   //const notes = await sequelize.query("SELECT * FROM blogs", { type: QueryTypes.SELECT })
-  const notes = await Blog.findAll()
-  res.json(notes)
+  const blogs = await Blog.findAll()
+  res.json(blogs)
 })
+
+app.post('/api/blogs', async (req, res) => {
+  console.log(req.body)
+  const blog = await Blog.create(req.body) 
+  res.json(blog)
+})
+
 
 const PORT = process.env.PORT || 3001
 
