@@ -51,6 +51,16 @@ app.post('/api/blogs', async (req, res) => {
   res.json(blog)
 })
 
+app.delete('/api/blogs/:id', async (req, res) => {
+  console.log(req.params.id)
+  //const blog = await Blog.delete(req.params.id) 
+  const rows = await Blog.destroy({
+    where: {
+      id: req.params.id,
+    },
+  });
+  res.json(rows)
+})
 
 const PORT = process.env.PORT || 3001
 
