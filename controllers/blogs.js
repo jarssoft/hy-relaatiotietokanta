@@ -17,12 +17,15 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   console.log(req.params.id)
   //const blog = await Blog.delete(req.params.id) 
-  const rows = await Blog.destroy({
-    where: {
-      id: req.params.id,
-    },
-  });
-  res.json(rows)
+
+  const blog = await Blog.findByPk(req.params.id)
+  if (blog) {    
+    await blog.destroy()
+    res.json(blog)
+  }else{
+    res.status(404).end()
+  }
+
 })
 
 module.exports = router
