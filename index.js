@@ -1,4 +1,4 @@
-const sequelize = require('./util/db')
+const { connectToDatabase } = require('./util/db')
 const { Sequelize, Model, DataTypes } = require('sequelize')
 const { PORT } = require('./util/config')
 
@@ -9,6 +9,11 @@ const router = require('./controllers/blogs')
 app.use(express.json())
 app.use('/api/blogs', router) 
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+const start = async () => {
+  await connectToDatabase()
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
+}
+
+start()
