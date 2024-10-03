@@ -7,30 +7,38 @@ const noteFinder = async (req, res, next) => {
     next()
   }
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   //const notes = await sequelize.query("SELECT * FROM blogs", { type: QueryTypes.SELECT })
   const blogs = await Blog.findAll()
   res.json(blogs)
 })
 
-router.post('/', async (req, res) => {
-  console.log(req.body)
-  const blog = await Blog.create(req.body) 
-  res.json(blog)
+router.post('/', async (req, res, next) => {
+  console.log(req.body)  
+  try {
+    const blog = await Blog.create(req.body) 
+    res.json(blog)
+  } catch(exception) { 
+    next(exception)
+  }  
 })
 
-router.put('/:id', noteFinder, async (req, res) => {
+router.put('/:id', noteFinder, async (req, res, next) => {
   if (req.blog) {
     req.blog.likes = req.body.likes
-    await req.blog.save()
-    res.json(req.blog)
+    if(!req.body.likes){
+      next({ name: 'MalformatRequestError' })
+    }else{
+      await req.blog.save()
+      res.json(req.blog)
+    }
   }else{
     res.status(404).end()
   }
 
 })
 
-router.delete('/:id', noteFinder, async (req, res) => {
+router.delete('/:id', noteFinder, async (req, res, next) => {
   if (req.blog) {    
     await req.blog.destroy()
     res.json(req.blog)
