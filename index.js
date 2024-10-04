@@ -4,10 +4,12 @@ const { PORT } = require('./util/config')
 
 const express = require('express')
 const app = express()
-const router = require('./controllers/blogs')
+const blogrouter = require('./controllers/blogs')
+const userrouter = require('./controllers/users')
 
 app.use(express.json())
-app.use('/api/blogs', router)
+app.use('/api/blogs', blogrouter)
+app.use('/api/users', userrouter)
 
 const unknownEndpoint = (request, response, next) => {
   next({name:"UnknownEndpointError"})
@@ -26,6 +28,9 @@ const errorHandler = (error, request, response, next) => {
   if (error.name === 'UnknownEndpointError') {
     return response.status(404).send({ error: 'Tuntematon pyyntö.' })
   }
+  if (error.name === 'UserNotFoundError') {
+    return response.status(404).send({ error: 'Virheellienn käyttäjä.' })
+  }  
 
   next(error)
 }
