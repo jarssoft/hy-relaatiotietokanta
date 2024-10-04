@@ -18,6 +18,8 @@ router.post('/', async (req, res, next) => {
     const user = await User.create(req.body) 
     res.json(user)
   } catch(exception) { 
+    console.log("post virhe");
+    
     next(exception)
   }  
 })
