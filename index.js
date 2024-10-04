@@ -36,7 +36,7 @@ const errorHandler = (error, request, response, next) => {
     return response.status(404).send({ error: 'Virheellienn käyttäjä.' })
   } */ 
 
-  return response.status(404).send({ errors: errors})
+  //return response.status(404).send({ errors: errors})
   
 
   next(error)
