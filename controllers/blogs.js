@@ -56,17 +56,19 @@ router.put('/:id', noteFinder, async (req, res, next) => {
   }else{
     res.status(404).end()
   }
-
 })
 
-router.delete('/:id', noteFinder, async (req, res, next) => {
-  if (req.blog) {    
-    await req.blog.destroy()
-    res.json(req.blog)
+router.delete('/:id', tokenExtractor, noteFinder, async (req, res, next) => {
+  if (req.blog) {
+    if(req.blog.userUsername===req.decodedToken.username){
+      await req.blog.destroy()
+      res.json(req.blog)
+    }else{
+      res.status(401).end()
+    }
   }else{
     res.status(404).end()
   }
-
 })
 
 module.exports = router
