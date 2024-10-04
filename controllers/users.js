@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {User} = require('../models')
+const {User, Blog} = require('../models')
 
 const noteFinder = async (req, res, next) => {
     req.user = await User.findByPk(req.params.id)  
@@ -8,7 +8,7 @@ const noteFinder = async (req, res, next) => {
   }
 
 router.get('/', async (req, res, next) => {
-  const users = await User.findAll()
+  const users = await User.findAll({include: { model: Blog, attributes: ['id', 'title','likes'] } })
   res.json(users)
 })
 
