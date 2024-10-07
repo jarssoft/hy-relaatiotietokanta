@@ -29,10 +29,11 @@ const tokenExtractor = (req, res, next) => {
 
 router.get('/', async (req, res, next) => {  
   let where = {}
+  let order =  [['likes', 'DESC']]
 
   if (req.query.search) {
     const pattern = {[Op.like]: `%${req.query.search}%`}
-    where = //[Op.iLike]: `%${req.query.search}%`
+    where =
       {
         [Op.or]: [
           { title: pattern },
@@ -46,7 +47,9 @@ router.get('/', async (req, res, next) => {
   const blogs = await Blog.findAll({
       attributes: { exclude: ['userUsername'] }, 
       include: { model: User, attributes: ['username', 'name', 'created_at'] } ,
-      where})
+      where, 
+      order
+    })
 
   res.json(blogs)
 }) 
