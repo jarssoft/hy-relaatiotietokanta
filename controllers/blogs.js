@@ -4,6 +4,7 @@ const { SECRET } = require('../util/config')
 const express = require('express')
 const router = express.Router()
 const {Blog, User} = require('../models')
+const { Op } = require('sequelize')
 
 const noteFinder = async (req, res, next) => {
     req.blog = await Blog.findByPk(req.params.id)  
@@ -27,11 +28,30 @@ const tokenExtractor = (req, res, next) => {
 }
 
 router.get('/', async (req, res, next) => {  
-  const blogs = await Blog.findAll({attributes: { exclude: ['userUsername'] }, include: { model: User, attributes: ['username', 'name', 'created_at'] } })
+  let where = {}
+
+  if (req.query.search) {
+    const pattern = {[Op.like]: `%${req.query.search}%`}
+    where = //[Op.iLike]: `%${req.query.search}%`
+      {
+        [Op.or]: [
+          { title: pattern },
+          { author: pattern}
+        ]
+      }
+    
+    console.log(`etsitään=${req.query.search}`)
+  }
+
+  const blogs = await Blog.findAll({
+      attributes: { exclude: ['userUsername'] }, 
+      include: { model: User, attributes: ['username', 'name', 'created_at'] } ,
+      where})
+
   res.json(blogs)
 }) 
 
-router.post('/', tokenExtractor, async (req, res, next) => {
+router.post('/', tokenExtractor, async (req, res, next) => { 
   console.log(req.body)  
   console.log(req.decodedToken);
   try {
