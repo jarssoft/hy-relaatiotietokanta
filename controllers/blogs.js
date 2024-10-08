@@ -57,6 +57,12 @@ router.get('/', async (req, res, next) => {
 router.post('/', tokenExtractor, async (req, res, next) => { 
   console.log(req.body)  
   console.log(req.decodedToken);
+
+  if(req.body.year && (req.body.year<1991 || req.body.year>new Date().getFullYear())){
+    next({ name: 'Malformat Year Error' })
+    return
+  }
+
   try {
     const user = await User.findByPk(req.decodedToken.username)
     console.log({...req.body, userUsername: user.username});
