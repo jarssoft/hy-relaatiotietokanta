@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize')
 
-
 module.exports = {
   up: async ({ context: queryInterface }) => {
+
     /*
                                         Table "public.blogs"
         Column     |          Type          | Collation | Nullable |              Default              
@@ -19,23 +19,29 @@ module.exports = {
         "blogs_user_username_fkey" FOREIGN KEY (user_username) REFERENCES users(username) ON UPDATE CASCADE ON DELETE SET NULL
     */
 
-    await queryInterface.createTable('notes', {
+    await queryInterface.createTable('blogs', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        allowNull: false
       },
-      content: {
+      author: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
+      url: {
         type: DataTypes.TEXT,
         allowNull: false
       },
-      important: {
-        type: DataTypes.BOOLEAN,
+      title: {
+        type: DataTypes.TEXT,
         allowNull: false
       },
-      date: {
-        type: DataTypes.DATE
-      },
+      likes: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      }
     })
 
     /*
@@ -53,29 +59,35 @@ module.exports = {
     */
 
     await queryInterface.createTable('users', {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-      },
-      username: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false
-      },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
+        username: {
+            type: DataTypes.STRING,
+            primaryKey: true,
+            allowNull: false,        
+            validate: {
+                isEmail: true
+            }
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        created_at: {
+            type: DataTypes.DATE,
+            allowNull: false
+        },
+        updated_at: {
+            type: DataTypes.DATE,
+            allowNull: false
+        }
     })
-    await queryInterface.addColumn('notes', 'user_id', {
-      type: DataTypes.INTEGER,
+    await queryInterface.addColumn('blogs', 'user_username', {
+      type: DataTypes.STRING,
       allowNull: false,
-      references: { model: 'users', key: 'id' },
+      references: { model: 'users', key: 'username' },
     })
   },
   down: async ({ context: queryInterface }) => {
-    await queryInterface.dropTable('notes')
+    await queryInterface.dropTable('blogs')
     await queryInterface.dropTable('users')
   },
 }

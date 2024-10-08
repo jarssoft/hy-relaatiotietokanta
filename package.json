@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "db": "./runpostgres.sh"
+    "db": "./runpostgres.sh",
+    "migration:up": "node util/run.js",
+    "migration:down": "node util/rollback.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +26,8 @@
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.0",
-    "sequelize": "^6.37.3"
+    "sequelize": "^6.37.3",
+    "umzug": "^3.8.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
