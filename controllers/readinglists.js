@@ -2,33 +2,20 @@ const jwt = require('jsonwebtoken')
 const { SECRET } = require('../util/config')
 
 const router = require('express').Router()
-const User = require('../models/user')
+const {Readings} = require('../models/')
 
-router.post('/', async (request, response) => {
-  const body = request.body
-
-  const user = await User.findByPk(body.username)  
-  const passwordCorrect = body.password === 'salainen'
-
-  if (!(user && passwordCorrect)) {
-    return response.status(401).json({
-      error: 'invalid username or password'
+router.post('/', async (req, res, next) => { 
+  console.log(req.body)  
+  //try {
+    const reading = await Readings.create({
+      blogId:req.body.blog_id, 
+      userUsername:req.body.user_username
     })
-  }
-
-  const userForToken = {
-    username: user.username,
-    name: user.name,
-  }
-
-  console.log(`SECRET=${SECRET}`);
-  
-
-  const token = jwt.sign(userForToken, SECRET)
-
-  response
-    .status(200)
-    .send({ token, username: user.username, name: user.name })
+    res.json(reading)
+  //  res.json(reading)
+  //} catch(exception) { 
+  //  next(exception)
+  //}  
 })
 
 module.exports = router
