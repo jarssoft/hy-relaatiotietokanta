@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true
       },
-      username: {
+      user_username: {
         type: DataTypes.STRING,
         allowNull: false,
         references: { model: 'users', key: 'username' },

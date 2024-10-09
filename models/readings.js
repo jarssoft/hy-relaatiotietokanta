@@ -10,7 +10,7 @@ Readings.init({
     primaryKey: true,
     autoIncrement: true
   },
-  username: {
+  userUsername: {
     type: DataTypes.STRING,
     allowNull: false,
     references: { model: 'users', key: 'username' },

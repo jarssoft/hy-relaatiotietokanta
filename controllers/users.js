@@ -2,13 +2,15 @@ const express = require('express')
 const router = express.Router()
 const {User, Blog} = require('../models')
 
-const noteFinder = async (req, res, next) => {
+const userFinder = async (req, res, next) => {
     req.user = await User.findByPk(req.params.id)  
     next()
   }
 
 router.get('/', async (req, res, next) => {
-  const users = await User.findAll({include: { model: Blog, attributes: ['id', 'title','likes'] } })
+  const users = await User.findAll({
+      include: { model: Blog, attributes: ['id', 'title','likes'] } 
+    })
   res.json(users)
 })
 
@@ -24,7 +26,7 @@ router.post('/', async (req, res, next) => {
   }  
 })
 
-router.put('/:id', noteFinder, async (req, res, next) => {
+router.put('/:id', userFinder, async (req, res, next) => {
   if (req.user) {    
     if(!req.body.name){
       next({ name: 'MalformatRequestError' })
