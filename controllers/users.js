@@ -24,7 +24,7 @@ router.get('/:id', userFinder, async (req, res, next) => {
         as: 'readlist',
         attributes: { exclude: ['userId']},
         through: {
-          attributes: []
+          attributes: ["id", "readed"]
         },
       }
     ]
