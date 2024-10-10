@@ -16,19 +16,28 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', userFinder, async (req, res, next) => {
 
+  const where = (req.query.read
+      ? {readed: req.query.read}
+      : {})
+
+  console.log(where);
+  
+
   const user = await User.findByPk(req.params.id, { 
     attributes: { exclude: [''] } ,
     include:[
       {
         model: Blog,
+        
         as: 'readlist',
         attributes: { exclude: ['userId']},
         through: {
+          where,
           attributes: ["id", "readed"]
         },
       }
     ]
-  })
+  }) 
 
   if (user) {
     res.json(user)
@@ -37,6 +46,8 @@ router.get('/:id', userFinder, async (req, res, next) => {
   }
   
 })
+
+
 
 router.post('/', async (req, res, next) => {
   console.log(req.body)  
