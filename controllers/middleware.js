@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('../util/config.js')
+const {Blog} = require('../models')
 
 const tokenExtractor = (req, res, next) => {
   const authorization = req.get('authorization')
@@ -15,4 +16,9 @@ const tokenExtractor = (req, res, next) => {
   next()
 }
 
-module.exports = { tokenExtractor }
+const noteFinder = async (req, res, next) => {
+  req.blog = await Blog.findByPk(req.params.id)  
+  next()
+}
+
+module.exports = { tokenExtractor, noteFinder }

@@ -5,12 +5,7 @@ const express = require('express')
 const router = express.Router()
 const {Blog, User} = require('../models')
 const { Op } = require('sequelize')
-const {tokenExtractor} = require('./middleware')
-
-const noteFinder = async (req, res, next) => {
-    req.blog = await Blog.findByPk(req.params.id)  
-    next()
-}
+const {tokenExtractor, noteFinder} = require('./middleware')
 
 router.get('/', async (req, res, next) => {  
   let where = {}
