@@ -22,4 +22,4 @@ Token.init({
   modelName: 'token'   
 })
 
-module.exports = User
+module.exports = Token
