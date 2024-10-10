@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {User, Blog, Readings} = require('../models')
+const {User, Blog} = require('../models')
 
 const userFinder = async (req, res, next) => {
     req.user = await User.findByPk(req.params.id)  
@@ -46,8 +46,6 @@ router.get('/:id', userFinder, async (req, res, next) => {
   }
   
 })
-
-
 
 router.post('/', async (req, res, next) => {
   console.log(req.body)  
