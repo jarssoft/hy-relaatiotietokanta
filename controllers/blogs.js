@@ -63,7 +63,8 @@ router.put('/:id', noteFinder, async (req, res, next) => {
       res.json(req.blog)
     }
   }else{
-    res.status(404).end()
+    next({ name: 'blog not found' })
+    //res.status(404).end()
   }
 })
 
@@ -76,7 +77,8 @@ router.delete('/:id', tokenExtractor, noteFinder, async (req, res, next) => {
       res.status(401).end()
     }
   }else{
-    res.status(404).end()
+    next({ name: 'blog not found' })
+    //res.status(404).end()
   }
 })
 
