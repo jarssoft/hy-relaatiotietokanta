@@ -12,17 +12,25 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
         references: { model: 'users', key: 'username' },
+        unique: 'actions_unique',
       },
       blog_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: { model: 'blogs', key: 'id' },
+        unique: 'actions_unique',
       },
       readed: {
         type: DataTypes.BOOLEAN,
         default: false,
-        defaultValue: false
+        defaultValue: false,
       },
+    }, {
+      uniqueKeys: {
+          actions_unique: {
+              fields: ['user_username', 'blog_id']
+          }
+      }
     })
   },
   down: async ({ context: queryInterface }) => {

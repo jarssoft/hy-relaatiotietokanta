@@ -7,16 +7,16 @@ const {tokenExtractor, noteFinder} = require('./middleware')
 
 router.post('/', async (req, res, next) => { 
   console.log(req.body)  
-  //try {
+  try {
     const reading = await Readings.create({
       blogId: req.body.blog_id, 
       userUsername: req.body.user_username
     })
     res.json(reading)
-  //  res.json(reading)
-  //} catch(exception) { 
-  //  next(exception)
-  //}  
+  
+  } catch(exception) { 
+    next(exception)
+  }  
 })
 
 router.put('/:id', tokenExtractor, noteFinder, async (req, res, next) => { 
