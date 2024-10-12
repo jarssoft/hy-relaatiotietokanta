@@ -56,11 +56,12 @@ router.post('/', tokenExtractor, async (req, res, next) => {
 router.put('/:id', noteFinder, async (req, res, next) => {
   if (req.blog) {
     req.blog.likes = req.body.likes
-    if(!req.body.likes){
-      next({ name: 'MalformatRequestError' })
-    }else{
+    
+    if(req.body.likes && !isNaN(req.blog.likes)){
       await req.blog.save()
       res.json(req.blog)
+    }else{
+      next({ name: 'MalformatRequestError' })
     }
   }else{
     next({ name: 'blog not found' })
