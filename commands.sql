@@ -9,5 +9,5 @@ CREATE TABLE blogs (
 insert into blogs (author, url, title) values ('Jari', 'http://', 'Myblog');
 insert into blogs (author, url, title) values ('Timo Soini', 'http://ploki.fi', 'Soinin ploki');
 
---insert into readings (username, blog_id) values ('timo@eduskunta.fi', 3);
---update users set disabled=true where username='paavo@eduskunta.fi';
+
+
