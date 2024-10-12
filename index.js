@@ -30,7 +30,7 @@ const errorHandler = (error, request, response, next) => {
   //const errors = error.errors.map((error)=>error.message)
   //console.error(`v:"${JSON.stringify(errors)}"`)
 
-  //--return response.status(400).send({ error: error.name })
+  return response.status(400).send({ error: error.name })
 
   /*
   if (error.name === 'SequelizeValidationError') {
