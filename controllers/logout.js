@@ -7,10 +7,9 @@ const {tokenExtractor} = require('./middleware')
 
 router.post('/', tokenExtractor, async (request, response) => {
 
-  const token = request.get('authorization').substring(7);
-  
-  const session = await Token.findByPk(token) //.substring(0, 64)
-  await session.destroy()
+  await Token.destroy({
+    where: {userUsername: request.decodedToken.username}
+    }) //.substring(0, 64)
 
   response
       .status(200)
