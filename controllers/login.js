@@ -16,6 +16,12 @@ router.post('/', async (request, response) => {
     })
   }
 
+  if (user.disabled) {
+    return response.status(403).json({
+      error: 'forbidden for illegal activity of user'
+    })
+  }
+
   const userForToken = {
     username: user.username,
     name: user.name,
