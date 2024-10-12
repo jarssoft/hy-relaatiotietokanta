@@ -50,10 +50,10 @@ router.get('/:id', userFinder, async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   console.log(req.body)  
   try {
-    const user = await User.create(req.body) 
+    const user = await User.create({...req.body, disabled:false}) 
     res.json(user)
   } catch(exception) { 
-    console.log("post virhe");
+    //console.log("post virhe");
     
     next(exception)
   }  
