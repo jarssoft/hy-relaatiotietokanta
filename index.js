@@ -10,6 +10,7 @@ const loginrouter = require('./controllers/login')
 const logoutrouter = require('./controllers/logout')
 const authorrouter = require('./controllers/authors')
 const readingrouter = require('./controllers/readinglists')
+const blockuser = require('./controllers/blockuser')
 
 app.use(express.json())
 app.use('/api/blogs', blogrouter)
@@ -18,6 +19,7 @@ app.use('/api/login', loginrouter)
 app.use('/api/logout', logoutrouter)
 app.use('/api/authors', authorrouter)
 app.use('/api/readinglists', readingrouter)
+app.use('/api/blockuser', blockuser)
 
 const unknownEndpoint = (request, response, next) => {
   next({name:"UnknownEndpointError"})

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('../util/config.js')
-const {Blog} = require('../models')
+const {Blog, User} = require('../models')
 const  {Token} = require('../models')
 
 const tokenExtractor = async (req, res, next) => {
@@ -29,4 +29,9 @@ const noteFinder = async (req, res, next) => {
   next()
 }
 
-module.exports = { tokenExtractor, noteFinder }
+const userFinder = async (req, res, next) => {
+  req.user = await User.findByPk(req.params.id)  
+  next()
+}
+
+module.exports = { tokenExtractor, noteFinder, userFinder }
