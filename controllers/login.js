@@ -4,22 +4,24 @@ const { SECRET } = require('../util/config')
 const router = require('express').Router()
 const  {User, Token} = require('../models')
 
-router.post('/', async (request, response) => {
+router.post('/', async (request, response, next) => {
   const body = request.body
 
   const user = await User.findByPk(body.username)  
   const passwordCorrect = body.password === 'salainen'
 
   if (!(user && passwordCorrect)) {
-    return response.status(401).json({
-      error: 'invalid username or password'
-    })
+
+      next({ errors:[{message: 'invalid username or password' }]})
+      return
   }
 
   if (user.disabled) {
-    return response.status(403).json({
-      error: 'forbidden for illegal activity of user'
-    })
+    //return response.status(403).json({
+    //  error: 'forbidden for illegal activity of user'
+    //})
+    next({ errors:[{message: 'forbidden for illegal activity of user' }]})
+    return
   }
 
   const userForToken = {

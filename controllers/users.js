@@ -20,8 +20,7 @@ router.get('/:id', userFinder, async (req, res, next) => {
       ? {readed: req.query.read}
       : {})
 
-  console.log(where);
-  
+  console.log(where);  
 
   const user = await User.findByPk(req.params.id, { 
     attributes: { exclude: [''] } ,
@@ -53,7 +52,7 @@ router.post('/', async (req, res, next) => {
     const user = await User.create({...req.body, disabled:false}) 
     res.json(user)
   } catch(exception) { 
-    //console.log("post virhe");
+    console.log(exception);
     
     next(exception)
   }  
@@ -62,16 +61,15 @@ router.post('/', async (req, res, next) => {
 router.put('/:id', userFinder, async (req, res, next) => {
   if (req.user) {    
     if(!req.body.name){
-      next({ name: 'MalformatRequestError' })
+      next({ errors:[{name: 'MalformatRequestError' }]})
     }else{
       req.user.name = req.body.name
       await req.user.save()
       res.json(req.user)
     }
   }else{
-    next({ name: 'UserNotFoundError' })
+    next({ errors:[{ name: 'UserNotFoundError' }]})
   }
-
 })
 
 module.exports = router

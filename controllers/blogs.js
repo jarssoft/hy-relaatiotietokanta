@@ -39,12 +39,13 @@ router.post('/', tokenExtractor, async (req, res, next) => {
   console.log(req.decodedToken);
 
   if(req.body.year && (req.body.year<1991 || req.body.year>new Date().getFullYear())){
-    next({ name: 'Malformat Year Error' })
+    //next({ name: 'Malformat Year Error' })
+    next({errors:[{ message: 'Malformat Year Error' }]})
     return
   }
 
   try {
-    const user = await User.findByPk(req.decodedToken.username)
+    const user = await User.findByPk(req.decodedToken.username) 
     console.log({...req.body, userUsername: user.username});
     const blog = await Blog.create({...req.body, userUsername: user.username})
     res.json(blog)
@@ -61,10 +62,11 @@ router.put('/:id', noteFinder, async (req, res, next) => {
       await req.blog.save()
       res.json(req.blog)
     }else{
-      next({ name: 'MalformatRequestError' })
+      
+      next({errors:[{ message: 'MalformatRequestError' }]})
     }
   }else{
-    next({ name: 'blog not found' })
+    next({errors:[{ message: 'blog not found' }]}) 
     //res.status(404).end()
   }
 })
