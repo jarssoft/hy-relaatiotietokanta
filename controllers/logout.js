@@ -9,7 +9,7 @@ router.post('/', tokenExtractor, async (request, response) => {
 
   const token = request.get('authorization').substring(7);
   
-  const session = await Token.findByPk(token.substring(0, 64))
+  const session = await Token.findByPk(token) //.substring(0, 64)
   await session.destroy()
 
   response

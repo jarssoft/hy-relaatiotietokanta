@@ -23,11 +23,10 @@ router.post('/', async (request, response) => {
 
   console.log(`SECRET=${SECRET}`);
   
-
   const token = jwt.sign(userForToken, SECRET)
 
   await Token.create({
-    token: token.substring(0, 64), 
+    token: token, //.substring(0, 64), 
     userUsername: user.username
   })
 

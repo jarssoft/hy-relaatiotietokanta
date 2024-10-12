@@ -1,12 +1,20 @@
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('../util/config.js')
 const {Blog} = require('../models')
+const  {Token} = require('../models')
 
-const tokenExtractor = (req, res, next) => {
+const tokenExtractor = async (req, res, next) => {
   const authorization = req.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+
+    const token = authorization.substring(7)
+    const session = await Token.findByPk(token)
+    if(!session){
+      return res.status(401).json({ error: 'token invalid (not found in server)' })
+    }
+
     try {
-      req.decodedToken = jwt.verify(authorization.substring(7), SECRET)
+      req.decodedToken = jwt.verify(token, SECRET)
     } catch{
       return res.status(401).json({ error: 'token invalid' })
     }
